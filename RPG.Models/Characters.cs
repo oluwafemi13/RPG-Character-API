@@ -11,5 +11,7 @@
         public int Intelligence { get; set; } = 10;
         public int Life { get; set; } = 100;
 
+        public RPGClass Rpg{ get; set; }
+
     }
 }
