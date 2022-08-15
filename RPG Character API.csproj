@@ -5,5 +5,9 @@
     <RootNamespace>RPG_Character_API</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Exchange.WebServices" Version="2.2.0" />
+  </ItemGroup>
+
 
 </Project>
