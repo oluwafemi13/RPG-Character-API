@@ -1,4 +1,6 @@
-﻿using Microsoft.Exchange.WebServices.Data;
+﻿using AutoMapper;
+using Microsoft.Exchange.WebServices.Data;
+using RPG_Character_API.Dtos;
 using RPG_Character_API.Interfaces;
 using RPG_Character_API.RPG.Models;
 using System.Collections.Generic;
@@ -9,46 +11,53 @@ namespace RPG_Character_API.Services
 {
     public class CharacterService : ICharacterService
     {
+        private readonly IMapper _mapper;
        
-        private static List<Characters> characters = new List<Characters>()
+        private static List<Character> characters = new List<Character>()
        {
-           new Characters(),
-           new Characters
+           new Character(),
+           new Character
            {
                Id = 1,
                Name = "kingsley",
-               Rpg = RPGClass.Batman
+               Rpg = RPG.Models.RPGClass.Batman
            },
-           new Characters
+           new Character
            {
                Id = 2,
                Name = "Micheal",
-               Rpg=RPGClass.Arrow
+               Rpg= RPG.Models.RPGClass.Arrow
            }
        };
 
-       
-
-        public async Task<ServiceResponse<List<Characters>>> GetAll()
+        public CharacterService(IMapper mapper)
         {
-            ServiceResponse<List<Characters>> serviceResponse = new ServiceResponse<List<Characters>>();
-            serviceResponse.Data = characters;
+            _mapper=mapper;
+        }
+
+        public async Task<ServiceResponse<List<GetCharacterDto>>> GetAll()
+        {
+            ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            serviceResponse.Data = _mapper.Map<List<GetCharacterDto>>(characters);
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<Characters>> GetById(int Id)
+        public async Task<ServiceResponse<GetCharacterDto>> GetById(int Id)
         {
-            ServiceResponse<Characters> serviceResponse = new ServiceResponse<Characters>();
-            var result = characters.FirstOrDefault(x => x.Id == Id);
+            ServiceResponse<GetCharacterDto> serviceResponse = new ServiceResponse<GetCharacterDto>();
+            var result = _mapper.Map<GetCharacterDto>( characters.FirstOrDefault(x => x.Id == Id));
             serviceResponse.Data = result;
             return serviceResponse;
         }
 
-        public async Task<ServiceResponse<List<Characters>>> AddCharacter(Characters newcharacter)
+        public async Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newcharacter)
         {
-            ServiceResponse<List<Characters>> serviceResponse = new ServiceResponse<List<Characters>>();
-            characters.Add(newcharacter);
-            serviceResponse.Data = characters;
+            ServiceResponse<List<GetCharacterDto>> serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+            Character character = _mapper.Map<Character>( newcharacter);
+            //this is for manually adding the Id since it was removed from the AddCharacterDto 
+            character.Id = characters.Max(c=>c.Id)+1;
+            //characters.Add(_mapper.Map<Character>(newcharacter));
+            serviceResponse.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList());
             return serviceResponse;
         }
     }

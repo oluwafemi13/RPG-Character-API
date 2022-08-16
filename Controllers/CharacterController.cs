@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RPG_Character_API.Dtos;
 using RPG_Character_API.Interfaces;
 using RPG_Character_API.RPG.Models;
 using RPG_Character_API.Services;
@@ -34,7 +35,7 @@ namespace RPG_Character_API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddCharacter(Characters newCharacter)
+        public async Task<IActionResult> AddCharacter(AddCharacterDto newCharacter)
         {
             return Ok(await _characterService.AddCharacter(newCharacter));
         }
