@@ -1,4 +1,5 @@
-﻿using RPG_Character_API.RPG.Models;
+﻿using RPG_Character_API.Dtos;
+using RPG_Character_API.RPG.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,10 +10,10 @@ namespace RPG_Character_API.Interfaces
 
         //Characters GetOne();
 
-       Task<ServiceResponse<List<Characters>>> GetAll();
+       Task<ServiceResponse<List<GetCharacterDto>>> GetAll();
 
-        Task<ServiceResponse<Characters>> GetById(int id);
+        Task<ServiceResponse<GetCharacterDto>> GetById(int id);
 
-        Task<ServiceResponse<List<Characters>>> AddCharacter(Characters newcharacter);
+        Task<ServiceResponse<List<GetCharacterDto>>> AddCharacter(AddCharacterDto newcharacter);
     }
 }
